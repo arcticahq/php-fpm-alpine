@@ -24,7 +24,3 @@ RUN docker-php-ext-install pdo_pgsql \
 
 # Set permissions with shadow apk
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
-# Copy app files
-COPY app $PROJECT_DIR
-RUN chown -R www-data:root $PROJECT_DIR
