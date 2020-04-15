@@ -15,6 +15,10 @@ RUN pecl install imagick && apk del autoconf g++ libtool make pcre-dev
 RUN apk add libwebp-tools optipng gifsicle jpegoptim npm \
   && npm install -g svgo
 
+# Make iconv work with Alphine
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 # Enable PHP Extensions
 RUN docker-php-ext-install pdo_pgsql \
   && docker-php-ext-install zip \
