@@ -4,9 +4,13 @@ ENV PROJECT_DIR="/var/www/"
 
 # Install Alpine Packages
 RUN apk add --update --no-cache shadow postgresql-dev libzip-dev zip icu-libs \
-  icu-dev autoconf g++ imagemagick imagemagick-dev libtool make pcre-dev
+  icu-dev autoconf g++ imagemagick imagemagick-dev libtool make pcre-dev nginx
 
 RUN apk add --update python3 python3-dev make cmake gcc g++ git pkgconf unzip wget py-pip build-base gsl libavc1394-dev libjpeg libjpeg-turbo-dev libpng-dev libdc1394-dev clang tiff-dev libwebp-dev linux-headers
+
+# Setup nginx and composer
+RUN mkdir -p /run/nginx
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # Install ImageMagick
 RUN pecl install imagick && apk del autoconf g++ libtool make pcre-dev
@@ -15,7 +19,7 @@ RUN pecl install imagick && apk del autoconf g++ libtool make pcre-dev
 RUN apk add libwebp-tools optipng gifsicle jpegoptim npm \
   && npm install -g svgo
 
-# Make iconv work with Alphine
+# Make iconv work with Alpine
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
